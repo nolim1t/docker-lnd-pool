@@ -48,6 +48,7 @@ build:buildx-master:
     extends: .build
     before_script:
         - "apt-get update && apt-get install -yq git && rm -fr .git && ls -la"
+        - "echo \"CI_REGISTRY_IMAGE = ${CI_REGISTRY_IMAGE}\""
         - "echo \"Preparing directory for building pool\" && git clone https://gitlab.com/lncm/upstream-oss/pool.git ./pool && cd ./pool && mv * .. && mv .git .. && cd .. && rm -fr pool && ls -la"
     only:
         refs:
