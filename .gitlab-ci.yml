@@ -47,6 +47,7 @@ variables:
 build:buildx-master:
     extends: .build
     before_script:
+        - "apt-get install -yq git && rm -fr .git && ls -la"
         - "git clone https://gitlab.com/lncm/upstream-oss/pool.git ./"
     only:
         refs:
