@@ -48,7 +48,7 @@ build:buildx-master:
     extends: .build
     before_script:
         - "apt-get update && apt-get install -yq git && rm -fr .git && ls -la"
-        - "echo \"Preparing directory for building pool\" && git clone https://gitlab.com/lncm/upstream-oss/pool.git ./pool && cd ./pool && mv * .. && cd .. && rm -fr pool && ls -la"
+        - "echo \"Preparing directory for building pool\" && git clone https://gitlab.com/lncm/upstream-oss/pool.git ./pool && cd ./pool && mv * .. && cd .. && mv .git .. && rm -fr pool && ls -la"
     only:
         refs:
             - master
@@ -84,7 +84,7 @@ build:buildx-tags-or-branch:
     extends: .build
     before_script:
         - "apt-get update && apt-get install -yq git && rm -fr .git && ls -la"
-        - "echo \"Preparing directory for building pool\" && git clone https://gitlab.com/lncm/upstream-oss/pool.git ./pool && cd ./pool && mv * .. && cd .. && rm -fr pool && ls -la"
+        - "echo \"Preparing directory for building pool\" && git clone https://gitlab.com/lncm/upstream-oss/pool.git ./pool && cd ./pool && mv * .. && cd .. && mv .git .. && rm -fr pool && ls -la"
     only:
       variables:
         - $CI_BUILDX_ARCHS
