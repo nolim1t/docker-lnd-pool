@@ -83,7 +83,8 @@ build:buildx-master:
 build:buildx-tags-or-branch:
     extends: .build
     before_script:
-        - "git clone https://gitlab.com/lncm/upstream-oss/pool.git ./"
+        - "apt-get update && apt-get install -yq git && rm -fr .git && ls -la"
+        - "echo \"Preparing directory for building pool\" && git clone https://gitlab.com/lncm/upstream-oss/pool.git ./pool && cd ./pool && mv * .. && cd .. && rm -fr pool && ls -la"
     only:
       variables:
         - $CI_BUILDX_ARCHS
