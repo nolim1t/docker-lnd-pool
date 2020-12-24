@@ -52,7 +52,25 @@ Create a directory called `${HOME}/.secrets` and put your password in a file cal
 
 #### Pool
 
+Create a directory called `${HOME}/.pool` and put a file called `poold.conf` in it
+
 This is quite new to me as of now. To be defined later ;) 
+
+##### Config Samples
+
+For a detail configuration spec, see the [upstream](https://github.com/lightninglabs/pool/blob/ae48cf330ff929a23b5fee16ae101f75cd400808/config.go#L83) repository
+
+```
+[Application Options]
+network=mainnet
+rpclisten=localhost:12010"
+restlisten=localhost:8281
+
+[lnd]
+lnd.host=localhost:10009
+lnd.macaroondir=/lnd/data/chain/bitcoin/mainnet
+lnd.tlspath=/lnd
+```
 
 ### Example file
 
