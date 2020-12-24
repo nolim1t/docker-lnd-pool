@@ -54,7 +54,7 @@ Create a directory called `${HOME}/.secrets` and put your password in a file cal
 
 Create a directory called `${HOME}/.pool` and put a file called `poold.conf` in it
 
-This is quite new to me as of now. To be defined later ;) 
+This is quite new to me as of now. Configuration to be tested.
 
 ##### Config Samples
 
@@ -62,10 +62,12 @@ For a detail configuration spec, see the [upstream](https://github.com/lightning
 
 ```
 [Application Options]
+; default settings for now
 network=mainnet
 rpclisten=localhost:12010"
 restlisten=localhost:8281
 
+; Assume that everything is on the same machine
 [lnd]
 lnd.host=localhost:10009
 lnd.macaroondir=/lnd/data/chain/bitcoin/mainnet
