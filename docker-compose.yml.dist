@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+    lnd:
+        image: lncm/lnd:v0.11.1-experimental
+        container_name: lnd
+        network_mode: host
+        stop_grace_period: 10m30s
+        restart: unless-stopped
+        volumes:
+            - "${HOME}/.lnd:/data/.lnd"
+    lnd-unlock:
+        image: lncm/lnd-unlock:1.0.2
+        container_name: lnd-unlock
+        network_mode: host
+        depends_on: [ lnd ]
+        restart: unless-stopped
+        volumes:
+            - "${HOME}/.lnd:/lnd"
+            - "${HOME}/.secrets:/secrets"
+        environment:
+            NETWORK: mainnet
+            LNDHOSTNAME: lnd
+            HOSTIPPORT: localhost:8080
+    pool:
+        image: registry.gitlab.com/nolim1t/docker-lnd-pool:latest
+        depends_on: [ lnd ]
+        container_name: pool
+        network_mode: host
+        restart: unless-stopped
+        stop_grace_period: 1m30s
+        volumes:
+            - "${HOME}/.pool:/data/.pool"
