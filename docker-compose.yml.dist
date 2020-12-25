@@ -22,7 +22,7 @@ services:
             LNDHOSTNAME: lnd
             HOSTIPPORT: localhost:8080
     pool:
-        image: registry.gitlab.com/nolim1t/docker-lnd-pool:latest
+        image: registry.gitlab.com/nolim1t/docker-lnd-pool:v0.3.4-alpha-f17679f4
         depends_on: [ lnd ]
         container_name: pool
         network_mode: host
