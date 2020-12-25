@@ -8,6 +8,13 @@
 
 This project automagically builds LND pool and pushes it to the [gitlab container registry](https://gitlab.com/nolim1t/docker-lnd-pool/container_registry/1590355)
 
+## Mirrors
+
+Because I'm a fan of decentralization, we should branch out to other repos too.
+
+* [Gitlab](https://gitlab.com/nolim1t/docker-lnd-pool) - CI Building to Gitlab Container registry
+* [Github](https://github.com/nolim1t/docker-lnd-pool)
+
 ## Building
 
 The below builds whatever is defined in the dockerfile
@@ -116,5 +123,5 @@ services:
 - [x] Test out container builds
 - [x] Document more
 - [ ] Work out how poold works with testnet
-- [ ] Set up github mirroring
+- [x] Set up github mirroring
 - [ ] Set up equivalent github actions
