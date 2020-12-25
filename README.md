@@ -6,7 +6,7 @@
 
 ## Abstract
 
-This project automagically builds LND pool and pushes it to the gitlab container registry.
+This project automagically builds LND pool and pushes it to the [gitlab container registry](https://gitlab.com/nolim1t/docker-lnd-pool/container_registry/1590355)
 
 ## Building
 
@@ -116,5 +116,5 @@ services:
 - [x] Test out container builds
 - [x] Document more
 - [ ] Work out how poold works with testnet
-- [ ] Set up equivalent github actions
 - [ ] Set up github mirroring
+- [ ] Set up equivalent github actions
