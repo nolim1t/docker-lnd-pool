@@ -64,7 +64,7 @@ For a detail configuration spec, see the [upstream](https://github.com/lightning
 [Application Options]
 ; default settings for now
 network=mainnet
-rpclisten=localhost:12010"
+rpclisten=localhost:12010
 restlisten=localhost:8281
 
 ; Assume that everything is on the same machine
