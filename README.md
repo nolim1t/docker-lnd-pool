@@ -13,7 +13,7 @@ This project automagically builds LND pool and pushes it to the [gitlab containe
 Because I'm a fan of decentralization, we should branch out to other repos too.
 
 * [Gitlab](https://gitlab.com/nolim1t/docker-lnd-pool) - CI Building to Gitlab Container registry
-* [Github](https://github.com/nolim1t/docker-lnd-pool)
+* [Github](https://github.com/nolim1t/docker-lnd-pool) - Build to `ghcr.io/nolim1t/lnd-pool` and `nolim1t/lnd-pool` on dockerhub
 
 ## Building
 
