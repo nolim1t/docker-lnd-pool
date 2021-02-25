@@ -1,0 +1,78 @@
+name: Docker build on push
+env:
+        DOCKER_CLI_EXPERIMENTAL: enabled
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+        build:
+                runs-on: ubuntu-18.04
+                name: Build and push all the stuff defined in this repo
+                steps:
+                        - name: Checkout repo
+                          uses: actions/checkout@v2
+
+                        - name: Set env variables
+                          run: |
+                                  echo "BRANCH=$(echo ${GITHUB_REF#refs/heads/} | sed 's/\//-/g')" >> $GITHUB_ENV
+                                  echo "SHORTSHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+                                  echo "DOCKER_HUB_REPO=lnd-pool" >> $GITHUB_ENV
+
+                        - name: Show set env variables
+                          run: |
+                                  printf "    BRANCH: %s\n"  "$BRANCH"
+                                  printf "    SHORTSHA: %s\n"  "$SHORTSHA"
+                                  printf "    REPO: %s\n" "$GITHUB_REPOSITORY"
+                                  printf "    COMMIT ID: %s\n" "$GITHUB_SHA"
+                                  printf "    DOCKER REPO: %s\n" "$DOCKER_HUB_REPO"
+
+                        - name: Login to Docker Hub
+                          run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+                        - name: Setup Docker buildx action
+                          uses: crazy-max/ghaction-docker-buildx@v1
+                          id: buildx
+                          with:
+                                  buildx-version: latest
+                                  qemu-version: latest
+
+                        - name: Show available Docker buildx platforms
+                          run: echo ${{ steps.buildx.outputs.platforms }}
+
+                        - name: Cache Docker layers
+                          uses: actions/cache@v2
+                          id: cache
+                          with:
+                              path: /tmp/.buildx-cache
+                              key: ${{ runner.os }}-buildx-${{ github.sha }}
+                              restore-keys: |
+                                  ${{ runner.os }}-buildx-
+
+                        - name: Build against latest tag
+                          run: |
+                                  docker buildx build \
+                                  --cache-from "type=local,src=/tmp/.buildx-cache" \
+                                  --cache-to "type=local,dest=/tmp/.buildx-cache" \
+                                  --platform linux/amd64,linux/arm64,linux/arm/v7 \
+                                  --tag ${{ secrets.DOCKER_HUB_USER }}/$DOCKER_HUB_REPO:latest \
+                                  --output "type=registry" .
+                                   
+                        - name: Push to GHCR.io too (ghcr.io/nolim1t/docker-lnd-pool)
+                          run: |
+                                  if [[ ! -z ${{ secrets.MAINTAINER_TOKEN }} ]] && [[ ! -z ${{ secrets.MAINTAINER_USER }} ]]; then
+                                      echo "${{ secrets.MAINTAINER_TOKEN }}" | docker login https://ghcr.io -u "${{ secrets.MAINTAINER_USER }}" --password-stdin
+                                      echo "Pushing to ghcr.io/nolim1t/docker-lnd-pool/latest ..."
+                                      docker buildx build \
+                                        --cache-from "type=local,src=/tmp/.buildx-cache" \
+                                        --cache-to "type=local,dest=/tmp/.buildx-cache" \
+                                        --platform linux/amd64,linux/arm64 \
+                                        --tag ghcr.io/nolim1t/docker-lnd-pool:latest \
+                                        --output "type=registry" .
+                                  else
+                                      echo "MAINTAINER_TOKEN and MAINTAINER_USER do no exist! Skipping!"
+                                  fi
+
