@@ -61,16 +61,16 @@ jobs:
                                   --tag ${{ secrets.DOCKER_HUB_USER }}/$DOCKER_HUB_REPO:latest \
                                   --output "type=registry" .
                                    
-                        - name: Push to GHCR.io too (ghcr.io/nolim1t/docker-lnd-pool)
+                        - name: Push to Github Package registry
                           run: |
                                   if [[ ! -z ${{ secrets.MAINTAINER_TOKEN }} ]] && [[ ! -z ${{ secrets.MAINTAINER_USER }} ]]; then
-                                      echo "${{ secrets.MAINTAINER_TOKEN }}" | docker login https://ghcr.io -u "${{ secrets.MAINTAINER_USER }}" --password-stdin
+                                      echo "${{ secrets.MAINTAINER_TOKEN }}" | docker login https://docker.pkg.github.com -u "${{ secrets.MAINTAINER_USER }}" --password-stdin
                                       echo "Pushing to ghcr.io/nolim1t/docker-lnd-pool/latest ..."
                                       docker buildx build \
                                         --cache-from "type=local,src=/tmp/.buildx-cache" \
                                         --cache-to "type=local,dest=/tmp/.buildx-cache" \
                                         --platform linux/amd64,linux/arm64 \
-                                        --tag ghcr.io/nolim1t/docker-lnd-pool:latest \
+                                        --tag docker.pkg.github.com/nolim1t/docker-lnd-pool/pool:latest \
                                         --output "type=registry" .
                                   else
                                       echo "MAINTAINER_TOKEN and MAINTAINER_USER do no exist! Skipping!"
